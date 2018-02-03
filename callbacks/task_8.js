@@ -15,14 +15,16 @@ function series(tasks, callback) {
 
   tasks[keys[index]]((err, res) => {
     let count = (err, res) => {
-      if (err) {
+      if (err && callback) {
         callback(err)
-      } else if (index === keys.length - 1) {
-        results[keys[index]] = res
-        callback(err, results)
       } else {
         results[keys[index]] = res
-        tasks[keys[++index]](count)
+
+        if (calback && index === keys.length - 1) {
+          callback(err, results)
+        } else {
+          tasks[keys[++index]](count)
+        }
       }
     }
     count(err, res)

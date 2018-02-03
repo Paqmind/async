@@ -14,30 +14,15 @@ function parallel(tasks, callback) {
 
   keys.forEach((key) => {
     tasks[key]((err, res) => {
-      if (err) {
+      if (err && calback) {
         callback(err)
-      }
-
-      results[key] = res
-
-      if (callback && Object.keys(results).length === keys.length) {
-        callback(err, results)
+      } else {
+        results[key] = res
+        if (callback && Object.keys(results).length === keys.length) {
+          callback(err, results)
+        }
       }
     })
   })
 }
 
-parallel([
-    function(callback) {
-        setTimeout(function() {
-            callback(null, 1);
-        }, 1000);
-    },
-    function(callback) {
-        setTimeout(function() {
-            callback(null, 2);
-        }, 700);
-    }
-], function(err, results) {
-  console.log(results)
-});
