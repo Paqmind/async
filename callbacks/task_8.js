@@ -10,11 +10,16 @@ function series(tasks, callback) {
     results = {}
   }
 
+  let keys = Object.keys(tasks)
+
+  if (keys.length == 0) {
+    return results
+  }
+
   if (!callback) {
     callback = function(err, res) {}
   }
 
-  let keys = Object.keys(tasks)
   let index = 0
 
   tasks[keys[index]]((err, res) => {
