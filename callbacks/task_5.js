@@ -12,7 +12,6 @@ function aSum(xs, next) {
 }
 
 // APP CODE (change here)
-let xs, ys
-aMap(double, [1, 2, 3], (arr) => xs = arr)
-aSum(xs, (sum) => ys = sum)
-console.log(ys)
+aMap(double, [1, 2, 3], (arr) => {
+  aSum(arr, (sum) => console.log(sum))
+})
