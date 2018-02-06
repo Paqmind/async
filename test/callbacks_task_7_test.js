@@ -1,5 +1,4 @@
 const assert = require('chai').assert;
-const async = require('async');
 const parallel = require('../callbacks/task_7');
 
 describe("Task 7", function() {
