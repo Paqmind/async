@@ -1,4 +1,4 @@
-function series(tasks, callback) {
+module.exports = function series(tasks, callback) {
   let results
 
   if (tasks instanceof Array) {
