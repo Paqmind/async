@@ -1,4 +1,4 @@
-function parallel(tasks, callback) {
+module.exports = function parallel(tasks, callback) {
   let results
 
   if (tasks instanceof Array) {
