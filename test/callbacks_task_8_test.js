@@ -4,7 +4,7 @@ const series = require('../callbacks/task_8');
 describe("Task 8", function() {
   describe("series()", function() {
     it("when array of tasks is not empty shoud return ['one', 'two']",
-      function() {
+      function(done) {
       series([
         function(callback) {
           setTimeout(function() {
@@ -18,16 +18,17 @@ describe("Task 8", function() {
         }
       ], function(err, res) {
         assert.equal(res, ['one', 'two']);
+        done();
       });
     });
 
-    it("when no tasks shoud return []", function() {
+    it("when no tasks shoud return []", function(done) {
       series([], function(err, res) {
         assert.equal(res, []);
       });
     });
 
-    it("when error in the tasks shoud catch the error", function() {
+    it("when error in the tasks shoud catch the error", function(done) {
       series([
         function(callback) {
           setTimeout(function() {
@@ -41,6 +42,7 @@ describe("Task 8", function() {
         }
       ], function(err, res) {
         assert.equal(err, 'Error');
+        done();
       });
     });
   });

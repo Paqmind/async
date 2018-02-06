@@ -1,11 +1,11 @@
 const assert = require('chai').assert;
-const parallel = require('../callbacks/task_7');
+const waterfall = require('../callbacks/task_9');
 
-describe("Task 7", function() {
-  describe("parallel()", function() {
-    it("when array of tasks is not empty should return ['one', 'two']",
+describe("Task 9", function() {
+  describe("waterfall()", function() {
+    it("when array of tasks is not empty shoud return ['one', 'two']",
       function(done) {
-      parallel([
+      waterfall([
         function(callback) {
           setTimeout(function() {
             callback(null, 'one');
@@ -17,21 +17,20 @@ describe("Task 7", function() {
           }, 100);
         }
       ], function(err, res) {
-        console.log(res)
         assert.equal(res, ['one', 'two']);
         done();
       });
     });
 
-    it("when no tasks should return []", function(done) {
-      parallel([], function(err, res) {
+    it("when no tasks shoud return []", function(done) {
+      waterfall([], function(err, res) {
         assert.equal(res, []);
         done();
       });
     });
 
-    it("when error in the tasks should catch the error", function(done) {
-      parallel([
+    it("when error in the tasks shoud catch the error", function(done) {
+      waterfall([
         function(callback) {
           setTimeout(function() {
             callback('Error', 'one');
