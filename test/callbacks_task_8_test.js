@@ -25,6 +25,7 @@ describe("Task 8", function() {
     it("when no tasks should return []", function(done) {
       series([], function(err, res) {
         assert.deepEqual(res, []);
+        done();
       });
     });
 
