@@ -18,14 +18,14 @@ describe("Task 7", function() {
         }
       ], function(err, res) {
         console.log(res)
-        assert.equal(res, ['one', 'two']);
+        assert.deepEqual(res, ['one', 'two']);
         done();
       });
     });
 
     it("when no tasks should return []", function(done) {
       parallel([], function(err, res) {
-        assert.equal(res, []);
+        assert.deepEqual(res, []);
         done();
       });
     });

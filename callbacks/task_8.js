@@ -10,33 +10,30 @@ module.exports = function series(tasks, callback) {
     results = {}
   }
 
-  let keys = Object.keys(tasks)
-
-  if (keys.length == 0) {
-    return results
-  }
-
   if (!callback) {
     callback = function(err, res) {}
   }
 
-  let index = 0
+  let keys = Object.keys(tasks)
 
-  tasks[keys[index]]((err, res) => {
-    let count = (err, res) => {
-      if (err) {
-        callback(err)
-      } else {
-        results[keys[index]] = res
-        if (index === keys.length - 1) {
-          callback(err, results)
+  if (keys.length == 0) {
+    callback(null, results)
+  } else {
+    let index = 0
+    tasks[keys[index]]((err, res) => {
+      let countFn = (err, res) => {
+        if (err) {
+          callback(err)
         } else {
-          tasks[keys[++index]](count)
+          results[keys[index]] = res
+          if (index === keys.length - 1) {
+            callback(err, results)
+          } else {
+            tasks[keys[++index]](countFn)
+          }
         }
       }
-    }
-    count(err, res)
-  })
+      countFn(err, res)
+    })
+  }
 }
-
-

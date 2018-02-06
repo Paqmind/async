@@ -17,14 +17,14 @@ describe("Task 9", function() {
           }, 100);
         }
       ], function(err, res) {
-        assert.equal(res, ['one', 'two']);
+        assert.deepEqual(res, ['one', 'two']);
         done();
       });
     });
 
     it("when no tasks shoud return []", function(done) {
       waterfall([], function(err, res) {
-        assert.equal(res, []);
+        assert.deepEqual(res, []);
         done();
       });
     });
