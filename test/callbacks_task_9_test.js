@@ -3,45 +3,43 @@ const waterfall = require('../callbacks/task_9');
 
 describe("Task 9", function() {
   describe("waterfall()", function() {
-    it("when array of tasks is not empty shoud return ['one', 'two']",
+    it("when array of tasks is not empty should return 'done'",
       function(done) {
-      waterfall([
-        function(callback) {
-          setTimeout(function() {
-            callback(null, 'one');
-          }, 200);
-        },
-        function(callback) {
-          setTimeout(function() {
-            callback(null, 'two');
-          }, 100);
-        }
-      ], function(err, res) {
-        assert.deepEqual(res, ['one', 'two']);
-        done();
-      });
+        waterfall([
+          function(callback) {
+            callback(null, 'one', 'two');
+          },
+          function(arg1, arg2, callback) {
+            callback(null, 'three');
+          },
+          function(arg1, callback) {
+            callback(null, 'done');
+          }
+        ], function(err, res) {
+          assert.equal(res, 'done');
+          done();
+        });
     });
 
-    it("when no tasks shoud return []", function(done) {
+    it("when no tasks should return undefined", function(done) {
       waterfall([], function(err, res) {
-        assert.deepEqual(res, []);
+        assert.isUndefined(res);
         done();
       });
     });
 
-    it("when error in the tasks shoud catch the error", function(done) {
+    it("when error in the tasks should catch the error", function(done) {
       waterfall([
-        function(callback) {
-          setTimeout(function() {
-            callback('Error', 'one');
-          }, 200);
-        },
-        function(callback) {
-          setTimeout(function() {
-            callback(null, 'two');
-          }, 100);
-        }
-      ], function(err, res) {
+          function(callback) {
+            callback(null, 'one', 'two');
+          },
+          function(arg1, arg2, callback) {
+            callback('Error', 'three');
+          },
+          function(arg1, callback) {
+            callback(null, 'done');
+          }
+        ], function(err, res) {
         assert.equal(err, 'Error');
         done();
       });
