@@ -1,4 +1,4 @@
-module.exports = function parallel(tasks, callback) {
+module.exports = function parallel (tasks, callback) {
   let results
 
   if (tasks instanceof Array) {
@@ -11,12 +11,12 @@ module.exports = function parallel(tasks, callback) {
   }
 
   if (!callback) {
-    callback = function(err, res) {}
+    callback = function () {}
   }
 
   let keys = Object.keys(tasks)
 
-  if (keys.length == 0) {
+  if (keys.length === 0) {
     callback(null, results)
   } else {
     keys.forEach((key) => {
@@ -33,4 +33,3 @@ module.exports = function parallel(tasks, callback) {
     })
   }
 }
-

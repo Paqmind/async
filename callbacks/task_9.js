@@ -1,14 +1,14 @@
-module.exports = function waterfall(fns, lastFn) {
+module.exports = function waterfall (fns, lastFn) {
   let results = []
 
   if (!lastFn) {
-    lastFn = function(err, res) {}
+    lastFn = function () {}
   }
 
-  function go(params) {
+  function go (params) {
     let fn = fns.shift()
     if (fn) {
-      fn(...params, function next(err) {
+      fn(...params, function next (err) {
         if (err) {
           lastFn(err)
         } else {

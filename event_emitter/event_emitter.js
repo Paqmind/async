@@ -1,19 +1,19 @@
 module.exports = class EventEmmiter {
-  constructor() {}
+  constructor () {}
 
-  emit(event) {}
+  emit (event) {}
 
-  addListener(event, listener) {}
+  addListener (event, listener) {}
 
-  on(event, listener) {
-    return addListener(event, listener);
+  on (event, listener) {
+    return addListener(event, listener)
   }
 
-  removeListener(event, listener) {}
+  removeListener (event, listener) {}
 
-  off(event, listener) {
-    return removeListener(event, listener);
+  off (event, listener) {
+    return removeListener(event, listener)
   }
 
-  once(event, listener) {}
+  once (event, listener) {}
 }

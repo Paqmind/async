@@ -1,4 +1,4 @@
-module.exports = function series(tasks, callback) {
+module.exports = function series (tasks, callback) {
   let results
 
   if (tasks instanceof Array) {
@@ -11,12 +11,12 @@ module.exports = function series(tasks, callback) {
   }
 
   if (!callback) {
-    callback = function(err, res) {}
+    callback = function () {}
   }
 
   let keys = Object.keys(tasks)
 
-  if (keys.length == 0) {
+  if (keys.length === 0) {
     callback(null, results)
   } else {
     let index = 0
