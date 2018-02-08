@@ -6,13 +6,13 @@ class EventEmitter {
 
   emit (event, ...args) {
     if (this.events[event]) {
-      this.events[event].forEach( (listener) => {
-        listenerArgs = args.shift() || []
+      this.events[event].forEach((listener) => {
+        let listenerArgs = args.shift() || []
         listener(...listenerArgs)
       })
 
       if (this.oneTimeEvents[event]) {
-        this.oneTimeEvents[event].forEach( (listener) => {
+        this.oneTimeEvents[event].forEach((listener) => {
           this.events[event]
               .splice(this.events[event].indexOf(listener), 1)
         })
@@ -35,7 +35,7 @@ class EventEmitter {
   }
 
   on (event, listener) {
-    return addListener(event, listener)
+    return this.addListener(event, listener)
   }
 
   removeListener (event, listener) {
@@ -47,7 +47,7 @@ class EventEmitter {
   }
 
   off (event, listener) {
-    return removeListener(event, listener)
+    return this.removeListener(event, listener)
   }
 
   once (event, listener) {
@@ -56,6 +56,6 @@ class EventEmitter {
     } else {
       this.oneTimeEvents[event] = [listener]
     }
-    return addListener (event, listener)
+    return this.addListener(event, listener)
   }
 }
