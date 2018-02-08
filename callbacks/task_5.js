@@ -3,11 +3,11 @@ let map = (fn, xs) => xs.map(fn)
 let sum = (xs) => xs.reduce((z, x) => z + x, 0)
 let double = (x) => x * 2
 
-function aMap(fn, xs, next) {
+function aMap (fn, xs, next) {
   next(map(fn, xs))
 }
 
-function aSum(xs, next) {
+function aSum (xs, next) {
   next(sum(xs))
 }
 
