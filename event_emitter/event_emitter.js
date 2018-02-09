@@ -1,11 +1,11 @@
-class EventEmitter {
+module.exports = class EventEmitter {
   constructor () {
     this.events = {}
     this.oneTimeEvents = {}
   }
 
   emit (event, ...args) {
-    if (this.events[event]) {
+    if (this.events[event] && this.events[event].length > 0) {
       this.events[event].forEach((listener) => {
         let listenerArgs = args.shift() || []
         listener(...listenerArgs)
