@@ -1,23 +1,15 @@
-module.exports = class EventEmitter {
+class EventEmitter {
   constructor () {
     this.events = {}
-    this.oneTimeEvents = {}
   }
 
-  emit (event, ...args) {
+  emit (event, arg) {
     if (this.events[event] && this.events[event].length > 0) {
       this.events[event].forEach((listener) => {
-        let listenerArgs = args.shift() || []
-        listener(...listenerArgs)
+        listener.callback(arg)
       })
 
-      if (this.oneTimeEvents[event]) {
-        this.oneTimeEvents[event].forEach((listener) => {
-          this.events[event]
-              .splice(this.events[event].indexOf(listener), 1)
-        })
-        delete this.oneTimeEvents[event]
-      }
+      this.events[event] = this.events[event].filter((obj) => !obj.once)
 
       return true
     } else {
@@ -26,36 +18,47 @@ module.exports = class EventEmitter {
   }
 
   addListener (event, listener) {
+    let listenerObject = {
+      once: false,
+      callback: listener
+    }
     if (this.events[event]) {
-      this.events[event].push(listener)
+      this.events[event].push(listenerObject)
     } else {
-      this.events[event] = [listener]
+      this.events[event] = [listenerObject]
     }
     return this
-  }
-
-  on (event, listener) {
-    return this.addListener(event, listener)
   }
 
   removeListener (event, listener) {
-    if (this.events[event].includes(listener)) {
-      this.events[event]
-          .splice(this.events[event].indexOf(listener), 1)
+    if (this.events[event]) {
+      let listeners = this.events[event].map((obj) => {
+        return obj.callback
+      })
+
+      if (listeners.includes(listener)) {
+        this.events[event]
+            .splice(listeners.indexOf(listener), 1)
+      }
     }
     return this
   }
 
-  off (event, listener) {
-    return this.removeListener(event, listener)
-  }
-
   once (event, listener) {
-    if (this.oneTimeEvents[event]) {
-      this.oneTimeEvents[event].push(listener)
-    } else {
-      this.oneTimeEvents[event] = [listener]
+    let listenerObject = {
+      once: true,
+      callback: listener
     }
-    return this.addListener(event, listener)
+    if (this.events[event]) {
+      this.events[event].push(listenerObject)
+    } else {
+      this.events[event] = [listenerObject]
+    }
+    return this
   }
 }
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener
+
+module.exports = EventEmitter

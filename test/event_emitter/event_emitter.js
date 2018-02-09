@@ -7,65 +7,87 @@ describe('event_emitter/event_emitter.js', function () {
 
   describe('addListener()', function () {
     it('should add listner to events object', function() {
+      let ee = new EventEmitter()
+      let cb = () => 'test'
       ee.addListener('test', cb)
-      assert.isTrue(ee.events['test'].includes(cb))
+      assert.deepInclude(
+        ee.events['test'],
+        { callback: cb, once: false }
+      )
     })
 
     it('should return emitter', function() {
-      assert.equal(ee.addListener('test', cb), ee)
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      assert(ee.addListener('test', cb) == ee)
     })
   })
 
   describe('removeListener()', function () {
     it('should remove only one listener', function() {
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      ee.addListener('test', cb)
+      ee.addListener('test', cb)
       ee.removeListener('test', cb)
-      assert.equal(ee.events['test'].length, 1)
+      assert(ee.events['test'].length == 1)
     })
 
     it('should return emitter', function() {
-      assert.equal(ee.removeListener('test', cb), ee)
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      ee.addListener('test', cb)
+      assert(ee.removeListener('test', cb) == ee)
     })
   })
 
   describe('once()', function () {
     it('should return emitter', function() {
-      assert.equal(ee.once('test', cb), ee)
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      assert(ee.once('test', cb) == ee)
     })
 
     it('listener should be removed after emit', function() {
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      ee.once('test', cb)
       ee.emit('test')
-      assert.equal(ee.events['test'].length, 0)
+      assert(ee.events['test'].length == 0)
     })
   })
 
   describe('emit()', function () {
     it('should return true if event exists and has listeners', function() {
+      let ee = new EventEmitter()
+      let cb = () => 'test'
       ee.addListener('test', cb)
       assert.isTrue(ee.emit('test'))
     })
 
     it('should return false if event does not exist', function() {
+      let ee = new EventEmitter()
       assert.isNotTrue(ee.emit('none'))
     })
 
     it('should return false if event does not have listeners', function() {
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      ee.addListener('test', cb)
       ee.removeListener('test', cb)
       assert.isNotTrue(ee.emit('test'))
     })
 
-    it('should pass supplied arguments to each callback', function(done) {
-      ee.addListener('test', (a, b, c) => {
-        assert.equal(a, 'a')
-        assert.equal(b, 'b')
-        assert.equal(c, 'c')
-      }).addListener('test', (d, e) => {
-        assert.equal(d, 'd')
-        assert.equal(e, 'e')
+    it('should pass argument to each callback', function(done) {
+      ee.addListener('test', (arg) => {
+        assert.equal(arg, 'arg')
+      }).addListener('test', (arg) => {
+        assert.equal(arg, 'arg')
       }).addListener('test', () => {
         done()
       })
 
-      ee.emit('test', ['a', 'b', 'c'], ['d', 'e'])
+      ee.emit('test', 'arg')
     })
   })
 })
