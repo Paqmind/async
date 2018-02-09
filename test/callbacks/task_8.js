@@ -1,11 +1,11 @@
 const assert = require('chai').assert
-const parallel = require('../callbacks/task_7')
+const series = require('../../callbacks/task_8')
 
-describe('Task 7', function () {
-  describe('parallel()', function () {
+describe('Task 8', function () {
+  describe('series()', function () {
     it("when array of tasks is not empty should return ['one', 'two']",
       function (done) {
-        parallel([
+        series([
           function (callback) {
             setTimeout(function () {
               callback(null, 'one')
@@ -17,21 +17,20 @@ describe('Task 7', function () {
             }, 100)
           }
         ], function (err, res) {
-          console.log(res)
           assert.deepEqual(res, ['one', 'two'])
           done()
         })
       })
 
     it('when no tasks should return []', function (done) {
-      parallel([], function (err, res) {
+      series([], function (err, res) {
         assert.deepEqual(res, [])
         done()
       })
     })
 
     it('when error in the tasks should catch the error', function (done) {
-      parallel([
+      series([
         function (callback) {
           setTimeout(function () {
             callback('Error', 'one')

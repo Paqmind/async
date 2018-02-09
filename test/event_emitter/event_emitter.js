@@ -1,5 +1,5 @@
 const assert = require('chai').assert
-const EventEmitter = require('../event_emitter/event_emitter')
+const EventEmitter = require('../../event_emitter/event_emitter')
 
 describe('event_emitter/event_emitter.js', function () {
   let ee = new EventEmitter()

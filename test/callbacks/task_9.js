@@ -1,5 +1,5 @@
 const assert = require('chai').assert
-const waterfall = require('../callbacks/task_9')
+const waterfall = require('../../callbacks/task_9')
 
 describe('Task 9', function () {
   describe('waterfall()', function () {
