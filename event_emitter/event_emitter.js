@@ -51,7 +51,7 @@ class EventEmitter {
   }
 
   once (event, listener) {
-    if (this.events[event]) {
+    if (this.oneTimeEvents[event]) {
       this.oneTimeEvents[event].push(listener)
     } else {
       this.oneTimeEvents[event] = [listener]
