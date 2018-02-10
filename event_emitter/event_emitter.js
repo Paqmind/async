@@ -4,13 +4,8 @@ class EventEmitter {
   }
 
   emit (event, arg) {
-    if (this.events[event] && this.events[event].length > 0) {
-      this.events[event].forEach((listener) => {
-        listener.callback(arg)
-      })
-
-      this.events[event] = this.events[event].filter((obj) => !obj.once)
-
+    if ((this.events[event] || []).length) {
+      this.events[event].forEach((listener) => listener(arg))
       return true
     } else {
       return false
@@ -18,43 +13,29 @@ class EventEmitter {
   }
 
   addListener (event, listener) {
-    let listenerObject = {
-      once: false,
-      callback: listener
-    }
-    if (this.events[event]) {
-      this.events[event].push(listenerObject)
-    } else {
-      this.events[event] = [listenerObject]
+    let listeners = this.events[event] || []
+    if (!listeners.includes(listener)) {
+      this.events[event] = listeners.concat([listener])
     }
     return this
   }
 
   removeListener (event, listener) {
-    if (this.events[event]) {
-      let listeners = this.events[event].map((obj) => {
-        return obj.callback
+    this.events[event] = (this.events[event] || [])
+      .filter((cb) => {
+        cb != listener
       })
-
-      if (listeners.includes(listener)) {
-        this.events[event]
-            .splice(listeners.indexOf(listener), 1)
-      }
-    }
     return this
   }
 
   once (event, listener) {
-    let listenerObject = {
-      once: true,
-      callback: listener
+    let listenerWrapper = (arg) => {
+      listener(arg)
+      this.removeListener(event, listener)
     }
-    if (this.events[event]) {
-      this.events[event].push(listenerObject)
-    } else {
-      this.events[event] = [listenerObject]
-    }
-    return this
+    this.events[event] = (this.events[event] || [])
+      .concat([listenerWrapper])
+    return listenerWrapper
   }
 }
 
