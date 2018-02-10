@@ -10,10 +10,15 @@ describe('event_emitter/event_emitter.js', function () {
       let ee = new EventEmitter()
       let cb = () => 'test'
       ee.addListener('test', cb)
-      assert.deepInclude(
-        ee.events['test'],
-        { callback: cb, once: false }
-      )
+      assert.include(ee.events['test'], cb)
+    })
+
+    it('should not add duplicate listner', function() {
+      let ee = new EventEmitter()
+      let cb = () => 'test'
+      ee.addListener('test', cb)
+      ee.addListener('test', cb)
+      assert(ee.events['test'] == 1)
     })
 
     it('should return emitter', function() {
@@ -24,13 +29,12 @@ describe('event_emitter/event_emitter.js', function () {
   })
 
   describe('removeListener()', function () {
-    it('should remove only one listener', function() {
+    it('should remove listener', function() {
       let ee = new EventEmitter()
       let cb = () => 'test'
       ee.addListener('test', cb)
-      ee.addListener('test', cb)
       ee.removeListener('test', cb)
-      assert(ee.events['test'].length == 1)
+      assert(ee.events['test'].length == 0)
     })
 
     it('should return emitter', function() {
@@ -42,10 +46,10 @@ describe('event_emitter/event_emitter.js', function () {
   })
 
   describe('once()', function () {
-    it('should return emitter', function() {
+    it('should return listener wrapper', function() {
       let ee = new EventEmitter()
       let cb = () => 'test'
-      assert(ee.once('test', cb) == ee)
+      assert.isFunction(ee.once('test', cb))
     })
 
     it('listener should be removed after emit', function() {
