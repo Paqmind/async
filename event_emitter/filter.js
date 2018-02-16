@@ -2,10 +2,12 @@ const EventEmitter = require('./event_emitter')
 
 let filter = (filterFn, emitter) => {
   let emitter2 = new EventEmitter()
-  Object.keys(emitter.events).forEach((event) => {
-    emitter2.events[event] = emitter.events[event].filter((cb) => {
-      return filterFn(cb, arg)
+  emitter2.on = (event, listener) => {
+    emitter.on(event, (arg) => {
+      if filterFn(arg) {
+        listener(arg)
+      }
     })
-  })
+  }
   return emitter2
 }
