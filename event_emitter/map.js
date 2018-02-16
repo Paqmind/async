@@ -2,12 +2,10 @@ const EventEmitter = require('./event_emitter')
 
 let map = (mapFn, emitter) => {
   let emitter2 = new EventEmitter()
-  Object.keys(emitter.events).forEach((event) => {
-    emitter2.events[event] = emitter.events[event].map((cb) => {
-      return function(arg) {
-        mapFn(cb, arg)
-      }
+  emitter2.on = (event, listener) => {
+    emitter.on(event, (arg) => {
+      listener(mapFn(arg))
     })
-  })
+  }
   return emitter2
 }
