@@ -2,9 +2,6 @@ const assert = require('chai').assert
 const EventEmitter = require('../../event_emitter/event_emitter')
 
 describe('event_emitter/event_emitter.js', function () {
-  let ee = new EventEmitter()
-  let cb = () => 'test'
-
   describe('addListener()', function () {
     it('should add listner to events object', function() {
       let ee = new EventEmitter()
@@ -86,6 +83,8 @@ describe('event_emitter/event_emitter.js', function () {
     })
 
     it('should pass argument to each callback', function(done) {
+      let ee = new EventEmitter()
+
       ee.addListener('test', (arg) => {
         assert.equal(arg, 'arg')
       }).addListener('test', (arg) => {
