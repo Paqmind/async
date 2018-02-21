@@ -17,4 +17,28 @@ module.exports = class Stream {
       this.emitter.off("data", observeFn)
     }
   }
+
+  filter (filterFn) {
+    let filteredStream = new Stream(this.streamFn)
+    filteredStream.observe = (observeFn) => {
+      let observeFnWrapper = (arg) => {
+        if (filterFn(arg)) {
+          observeFn(arg)
+        }
+      }
+      let noop = () => null
+
+      filteredStream.emitter.on("data", observeFnWrapper)
+
+      let unsubscribeFn = filteredStream.streamFn({
+        emit: (x) => filteredStream.emitter.emit("data", x)
+      }) || noop
+
+      return () => {
+        unsubscribeFn()
+        filteredStream.emitter.off("data", observeFnWrapper)
+      }
+    }
+    return filteredStream
+  }
 }
