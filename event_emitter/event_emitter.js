@@ -3,9 +3,9 @@ class EventEmitter {
     this.events = {}
   }
 
-  emit (event, arg) {
+  emit (event, ...args) {
     if ((this.events[event] || []).length) {
-      this.events[event].forEach((listener) => listener(arg))
+      this.events[event].forEach((listener) => listener(...args))
       return true
     } else {
       return false
@@ -22,16 +22,14 @@ class EventEmitter {
 
   removeListener (event, listener) {
     this.events[event] = (this.events[event] || [])
-      .filter((cb) => {
-        cb != listener
-      })
+      .filter(cb => cb != listener)
     return this
   }
 
   once (event, listener) {
     let listenerWrapper = (arg) => {
       listener(arg)
-      this.removeListener(event, listener)
+      this.removeListener(event, listenerWrapper)
     }
     this.events[event] = (this.events[event] || [])
       .concat([listenerWrapper])

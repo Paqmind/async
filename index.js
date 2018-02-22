@@ -3,17 +3,15 @@ const Stream = require('./stream/stream')
 let streamFn = ({emit}) => {
   let x = 0
   let interval = setInterval(() => emit(x++), 100)
-  return () => clearInterval(interval)
 }
 
-let observeFn = (arg) =>  {
-  console.log(arg)
+let observeFn = (arg, acc) =>  {
+  console.log(acc)
 }
 
 let s$ = new Stream(streamFn)
-let s2$ = s$.filter((x) => x % 3 == 0)
-let unsubscribeFn = s2$.observe(observeFn)
+let uns = s$.observe((x) => console.log('__________'))
+let s2$ = s$.scan(10, 0)
+s2$.observe(observeFn)
 
-setTimeout(() => {
-  unsubscribeFn()
-}, 5000)
+// setTimeout(uns, 50000)

@@ -10,7 +10,7 @@ module.exports = class Stream {
     this.emitter.on("data", observeFn)
     let noop = () => null
     let unsubscribeFn = this.streamFn({
-      emit: (x) => this.emitter.emit("data", x)
+      emit: (...args) => this.emitter.emit("data", ...args)
     }) || noop
     return () => {
       unsubscribeFn()
@@ -23,6 +23,19 @@ module.exports = class Stream {
       return this.observe(x => {
         if (filterFn(x)) {
           emit(x)
+        }
+      })
+    })
+  }
+
+  scan (number, acc) {
+    return new Stream(({emit}) => {
+      let unsubscribeFn = this.observe((x) => {
+        if (number == 0) {
+          unsubscribeFn()
+        } else {
+          number--
+          emit(x, acc)
         }
       })
     })
