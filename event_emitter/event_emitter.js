@@ -3,9 +3,9 @@ class EventEmitter {
     this.events = {}
   }
 
-  emit (event, ...args) {
+  emit (event, arg) {
     if ((this.events[event] || []).length) {
-      this.events[event].forEach((listener) => listener(...args))
+      this.events[event].forEach((listener) => listener(arg))
       return true
     } else {
       return false
