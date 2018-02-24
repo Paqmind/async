@@ -9,7 +9,9 @@ describe('event_emitter/event_emitter.js', function () {
         let interval = setInterval(() => emit(x++), 100)
         return () => clearInterval(interval)
       }
-      let observeFn = (arg) => 'some actions'
+
+      let observeArgs = []
+      let observeFn = (arg) => observeArgs.push(arg)
 
       let s$ = new Stream(streamFn)
       let unsubscribeFn = s$.observe(observeFn)
@@ -18,9 +20,10 @@ describe('event_emitter/event_emitter.js', function () {
 
       setTimeout(() => {
         unsubscribeFn()
-        assert(
-          s$.emitter.events['data'].length == 0,
-          'unsubscribing correct')
+        assert.deepEqual(observeArgs, [0, 1, 2, 3],
+                         'observeFn called with right args')
+        assert(s$.emitter.events['data'].length == 0,
+               'unsubscribing correct')
         done()
       }, 500)
     })
