@@ -92,4 +92,27 @@ describe('event_emitter/event_emitter.js', function () {
       }, 500)
     })
   })
+
+  describe('scan()', function() {
+    it('should call observeFn with accumulator', function(done) {
+      let streamFn = ({emit}) => {
+        let x = 0
+        let interval = setInterval(() => emit(x++), 100)
+        return () => clearInterval(interval)
+      }
+
+      let observeArgs = []
+      let observeFn = (arg) => observeArgs.push(arg)
+
+      let stream$ = new Stream(streamFn)
+      let scanedStream$ = stream$.scan(0, (x, y) => x + y)
+      let unsubscribeFn = scanedStream$.observe(observeFn)
+
+      setTimeout(() => {
+        unsubscribeFn()
+        assert.deepEqual(observeArgs, [0, 1, 3, 6])
+        done()
+      }, 500)
+    })
+  })
 })

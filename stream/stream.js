@@ -28,9 +28,9 @@ module.exports = class Stream {
     })
   }
 
-  scan (scanFn, acc) {
+  scan (acc, scanFn) {
     return new Stream(({emit}) => {
-      this.observe((x) => {
+      return this.observe((x) => {
         acc = scanFn(x, acc)
         emit(acc)
       })
