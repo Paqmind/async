@@ -9,12 +9,12 @@ describe('Task 8', function () {
           function (callback) {
             setTimeout(function () {
               callback(null, 'one')
-            }, 200)
+            }, 20)
           },
           function (callback) {
             setTimeout(function () {
               callback(null, 'two')
-            }, 100)
+            }, 10)
           }
         ], function (err, res) {
           assert.deepEqual(res, ['one', 'two'])
@@ -34,12 +34,12 @@ describe('Task 8', function () {
         function (callback) {
           setTimeout(function () {
             callback('Error', 'one')
-          }, 200)
+          }, 20)
         },
         function (callback) {
           setTimeout(function () {
             callback(null, 'two')
-          }, 100)
+          }, 10)
         }
       ], function (err, res) {
         assert.equal(err, 'Error')

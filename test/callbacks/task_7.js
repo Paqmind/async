@@ -9,12 +9,12 @@ describe('Task 7', function () {
           function (callback) {
             setTimeout(function () {
               callback(null, 'one')
-            }, 200)
+            }, 20)
           },
           function (callback) {
             setTimeout(function () {
               callback(null, 'two')
-            }, 100)
+            }, 10)
           }
         ], function (err, res) {
           console.log(res)
@@ -35,12 +35,12 @@ describe('Task 7', function () {
         function (callback) {
           setTimeout(function () {
             callback('Error', 'one')
-          }, 200)
+          }, 20)
         },
         function (callback) {
           setTimeout(function () {
             callback(null, 'two')
-          }, 100)
+          }, 10)
         }
       ], function (err, res) {
         assert.equal(err, 'Error')
