@@ -2,7 +2,7 @@ const assert = require('chai').assert
 const EventEmitter = require('../../event_emitter/event_emitter')
 
 describe('event_emitter/event_emitter.js', function () {
-  describe('addListener()', function () {
+  describe('#addListener()', function () {
     it('should add listner to events object', function() {
       let ee = new EventEmitter()
       let cb = () => 'test'
@@ -25,7 +25,7 @@ describe('event_emitter/event_emitter.js', function () {
     })
   })
 
-  describe('removeListener()', function () {
+  describe('#removeListener()', function () {
     it('should remove listener', function() {
       let ee = new EventEmitter()
       let cb = () => 'test'
@@ -42,7 +42,7 @@ describe('event_emitter/event_emitter.js', function () {
     })
   })
 
-  describe('once()', function () {
+  describe('#once()', function () {
     it('should return listener wrapper', function() {
       let ee = new EventEmitter()
       let cb = () => 'test'
@@ -61,7 +61,7 @@ describe('event_emitter/event_emitter.js', function () {
     })
   })
 
-  describe('emit()', function () {
+  describe('#emit()', function () {
     it('should return true if event exists and has listeners', function() {
       let ee = new EventEmitter()
       let cb = () => 'test'

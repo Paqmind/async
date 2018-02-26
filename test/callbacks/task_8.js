@@ -2,7 +2,7 @@ const assert = require('chai').assert
 const series = require('../../callbacks/task_8')
 
 describe('Task 8', function () {
-  describe('series()', function () {
+  describe('#series()', function () {
     it("when array of tasks is not empty should return ['one', 'two']",
       function (done) {
         series([

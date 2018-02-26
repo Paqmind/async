@@ -2,7 +2,7 @@ const assert = require('chai').assert
 const waterfall = require('../../callbacks/task_9')
 
 describe('Task 9', function () {
-  describe('waterfall()', function () {
+  describe('#waterfall()', function () {
     it("when array of tasks is not empty should return 'done'",
       function (done) {
         waterfall([
