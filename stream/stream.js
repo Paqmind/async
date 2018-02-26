@@ -7,14 +7,15 @@ module.exports = class Stream {
   }
 
   observe (observeFn) {
-    this.emitter.on("data", observeFn)
+    let eventName = Math.random().toString(36).substr(2, 9)
+    this.emitter.on(eventName, observeFn)
     let noop = () => null
     let unsubscribeFn = this.streamFn({
-      emit: (arg) => this.emitter.emit("data", arg)
+      emit: (arg) => this.emitter.emit(eventName, arg)
     }) || noop
     return () => {
       unsubscribeFn()
-      this.emitter.off("data", observeFn)
+      this.emitter.off(eventName, observeFn)
     }
   }
 

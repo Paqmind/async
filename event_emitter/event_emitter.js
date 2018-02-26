@@ -23,6 +23,9 @@ class EventEmitter {
   removeListener (event, listener) {
     this.events[event] = (this.events[event] || [])
       .filter(cb => cb != listener)
+    if (this.events[event].length == 0) {
+      delete this.events[event]
+    }
     return this
   }
 

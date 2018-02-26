@@ -31,7 +31,7 @@ describe('event_emitter/event_emitter.js', function () {
       let cb = () => 'test'
       ee.addListener('test', cb)
       ee.removeListener('test', cb)
-      assert(ee.events['test'].length == 0)
+      assert.isUndefined(ee.events['test'])
     })
 
     it('should return emitter', function() {
@@ -48,8 +48,6 @@ describe('event_emitter/event_emitter.js', function () {
       let cb = () => 'test'
       let listenerWrapper = ee.once('test', cb)
       assert.isFunction(listenerWrapper)
-      ee.removeListener('test', listenerWrapper)
-      assert(ee.events['test'].length == 0)
     })
 
     it('listener should be removed after emit', function() {
@@ -57,7 +55,7 @@ describe('event_emitter/event_emitter.js', function () {
       let cb = () => 'test'
       ee.once('test', cb)
       ee.emit('test')
-      assert(ee.events['test'].length == 0)
+      assert.isUndefined(ee.events['test'])
     })
   })
 

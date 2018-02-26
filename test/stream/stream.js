@@ -25,7 +25,7 @@ describe('event_emitter/event_emitter.js', function () {
 
       setTimeout(() => {
         unsubscribeFn()
-        assert(s$.emitter.events['data'].length == 0)
+        assert(Object.keys(s$.emitter.events).length == 0)
         done()
       }, 45)
     })
@@ -105,6 +105,33 @@ describe('event_emitter/event_emitter.js', function () {
         assert.deepEqual(observeArgs, [0, 1, 3, 6])
         done()
       }, 45)
+    })
+  })
+
+  describe('two subscribtions for one stream', function() {
+    it('one should work with delay', function(done) {
+      let s$1 = new Stream(({emit}) => {
+        let x = 0
+        let interval = setInterval(() => emit(x++), 10)
+        return () => clearInterval(interval)
+      })
+
+      let observeArgs1 = []
+      let observeArgs2 = []
+
+      let uns1 = s$1.observe((arg) => observeArgs1.push(arg))
+      let uns2
+      setTimeout(() => {
+        uns2 = s$1.observe((arg) => observeArgs2.push(arg))
+      }, 30)
+
+      setTimeout(() => {
+        uns1()
+        uns2()
+        assert.deepEqual(observeArgs1, [0, 1, 2, 3, 4])
+        assert.deepEqual(observeArgs2, [0, 1])
+        done()
+      }, 55)
     })
   })
 })
