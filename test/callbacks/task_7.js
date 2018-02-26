@@ -2,7 +2,7 @@ const assert = require('chai').assert
 const parallel = require('../../callbacks/task_7')
 
 describe('Task 7', function () {
-  describe('parallel()', function () {
+  describe('#parallel()', function () {
     it("when array of tasks is not empty should return ['one', 'two']",
       function (done) {
         parallel([
