@@ -17,7 +17,6 @@ describe('Task 7', function () {
             }, 10)
           }
         ], function (err, res) {
-          console.log(res)
           assert.deepEqual(res, ['one', 'two'])
           done()
         })
