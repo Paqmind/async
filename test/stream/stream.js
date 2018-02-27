@@ -66,6 +66,27 @@ describe('event_emitter/event_emitter.js', function () {
     })
   })
 
+  describe('#map()', function() {
+    it('should call observeFn with mapped args', function(done) {
+      let stream$ = new Stream( ({emit}) => {
+        let x = 0
+        let interval = setInterval(() => emit(x++), 10)
+        return () => clearInterval(interval)
+      })
+      let mappedStream$ = stream$.map((x) => x * 2)
+      let observeArgs = []
+      let unsubscribeFn = mappedStream$.observe((arg) => {
+        observeArgs.push(arg)
+      })
+
+      setTimeout(() => {
+        unsubscribeFn()
+        assert.deepEqual(observeArgs, [0, 2, 4, 6])
+        done()
+      }, 45)
+    })
+  })
+
   describe('#filter()', function() {
     it('should call observeFn with filtered args', function(done) {
       let stream$ = new Stream( ({emit}) => {

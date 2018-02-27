@@ -19,6 +19,14 @@ module.exports = class Stream {
     }
   }
 
+  map (mapFn) {
+    return new Stream(({emit}) => {
+      return this.observe(x => {
+        emit(mapFn(x))
+      })
+    })
+  }
+
   filter (filterFn) {
     return new Stream(({emit}) => {
       return this.observe(x => {
