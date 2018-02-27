@@ -12,7 +12,6 @@ module.exports = function waterfall (fns, lastFn) {
         if (err) {
           lastFn(err)
         } else {
-          console.log(arguments)
           results = [...arguments].slice(1)
           go(results)
         }
