@@ -1,47 +1,47 @@
 const assert = require('chai').assert
 const series = require('../../callbacks/task_8')
 
-describe('Task 8', function () {
-  describe('#series()', function () {
+describe('Task 8', () => {
+  describe('#series()', () => {
     it("when array of tasks is not empty should return ['one', 'two']",
-      function (done) {
+      (done) => {
         series([
-          function (callback) {
-            setTimeout(function () {
+          (callback) => {
+            setTimeout(() => {
               callback(null, 'one')
             }, 20)
           },
-          function (callback) {
-            setTimeout(function () {
+          (callback) => {
+            setTimeout(() => {
               callback(null, 'two')
             }, 10)
           }
-        ], function (err, res) {
+        ], (err, res) => {
           assert.deepEqual(res, ['one', 'two'])
           done()
         })
       })
 
-    it('when no tasks should return []', function (done) {
-      series([], function (err, res) {
+    it('when no tasks should return []', (done) => {
+      series([], (err, res) => {
         assert.deepEqual(res, [])
         done()
       })
     })
 
-    it('when error in the tasks should catch the error', function (done) {
+    it('when error in the tasks should catch the error', (done) => {
       series([
-        function (callback) {
-          setTimeout(function () {
+        (callback) => {
+          setTimeout(() => {
             callback('Error', 'one')
           }, 20)
         },
-        function (callback) {
-          setTimeout(function () {
+        (callback) => {
+          setTimeout(() => {
             callback(null, 'two')
           }, 10)
         }
-      ], function (err, res) {
+      ], (err, res) => {
         assert.equal(err, 'Error')
         done()
       })
