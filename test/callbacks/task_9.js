@@ -5,14 +5,11 @@ describe('Task 9', () => {
   describe('#waterfall()', () => {
     it("when array of tasks is not empty should return 'done'",
       (done) => {
-        waterfall([
-          (callback) => {
+        waterfall([(callback) => {
             callback(null, 'one', 'two')
-          },
-          (arg1, arg2, callback) => {
+          }, (arg1, arg2, callback) => {
             callback(null, 'three')
-          },
-          (arg1, callback) => {
+          }, (arg1, callback) => {
             callback(null, 'done')
           }
         ], (err, res) => {
@@ -29,14 +26,11 @@ describe('Task 9', () => {
     })
 
     it('when error in the tasks should catch the error', (done) => {
-      waterfall([
-        (callback) => {
+      waterfall([(callback) => {
           callback(null, 'one', 'two')
-        },
-        (arg1, arg2, callback) => {
+        }, (arg1, arg2, callback) => {
           callback('Error', 'three')
-        },
-        (arg1, callback) => {
+        }, (arg1, callback) => {
           callback(null, 'done')
         }
       ], (err, res) => {

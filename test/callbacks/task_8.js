@@ -3,15 +3,12 @@ const series = require('../../callbacks/task_8')
 
 describe('Task 8', () => {
   describe('#series()', () => {
-    it("when array of tasks is not empty should return ['one', 'two']",
-      (done) => {
-        series([
-          (callback) => {
+    it("when array of tasks is not empty should return ['one', 'two']", (done) => {
+        series([(callback) => {
             setTimeout(() => {
               callback(null, 'one')
             }, 20)
-          },
-          (callback) => {
+          }, (callback) => {
             setTimeout(() => {
               callback(null, 'two')
             }, 10)
@@ -30,13 +27,11 @@ describe('Task 8', () => {
     })
 
     it('when error in the tasks should catch the error', (done) => {
-      series([
-        (callback) => {
+      series([(callback) => {
           setTimeout(() => {
             callback('Error', 'one')
           }, 20)
-        },
-        (callback) => {
+        }, (callback) => {
           setTimeout(() => {
             callback(null, 'two')
           }, 10)

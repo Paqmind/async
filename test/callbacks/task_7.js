@@ -3,15 +3,12 @@ const parallel = require('../../callbacks/task_7')
 
 describe('Task 7', () => {
   describe('#parallel()', () => {
-    it("when array of tasks is not empty should return ['one', 'two']",
-      (done) => {
-        parallel([
-          (callback) => {
+    it("when array of tasks is not empty should return ['one', 'two']", (done) => {
+        parallel([(callback) => {
             setTimeout(() => {
               callback(null, 'one')
             }, 20)
-          },
-          (callback) => {
+          }, (callback) => {
             setTimeout(() => {
               callback(null, 'two')
             }, 10)
@@ -30,13 +27,11 @@ describe('Task 7', () => {
     })
 
     it('when error in the tasks should catch the error', (done) => {
-      parallel([
-        (callback) => {
+      parallel([(callback) => {
           setTimeout(() => {
             callback('Error', 'one')
           }, 20)
-        },
-        (callback) => {
+        }, (callback) => {
           setTimeout(() => {
             callback(null, 'two')
           }, 10)
