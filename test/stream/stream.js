@@ -150,6 +150,26 @@ describe('stream/stream.js', () => {
       })
     })
 
+    describe('#skip()', () => {
+      it('should skip observeFn first 2 times', (done) => {
+        let s$ = new Stream(({emit}) => {
+          let x = 0
+          let interval = setInterval(() => emit(x++), 10)
+          return () => clearInterval(interval)
+        })
+        let observeArgs = []
+        let unsubscribeFn = s$.skip(2).observe((arg) => {
+          observeArgs.push(arg)
+        })
+
+        setTimeout(() => {
+          unsubscribeFn()
+          assert.deepEqual(observeArgs, [2, 3])
+          done()
+        }, 45)
+      })
+    })
+
     describe('two subscriptions for one stream', () => {
       it.skip('should work independently', (done) => {
         let s$1 = new Stream(({emit}) => {

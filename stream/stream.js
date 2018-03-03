@@ -59,4 +59,12 @@ module.exports = class Stream {
       return unsubscribeFn
     })
   }
+
+  skip (number) {
+    return new Stream(({emit}) => {
+      return this.observe((x) => {
+        number ? number-- : emit(x)
+      })
+    })
+  }
 }
