@@ -4,18 +4,18 @@ module.exports = class Stream {
   constructor (streamFn) {
     this.streamFn = streamFn
     this.emitter = new EventEmitter()
+    this.unsubscribeFn = null
   }
 
   observe (observeFn) {
-    let eventName = Math.random().toString(36).substr(2, 9)
-    this.emitter.on(eventName, observeFn)
+    this.emitter.on('data', observeFn)
     let noop = () => null
-    let unsubscribeFn = this.streamFn({
-      emit: (arg) => this.emitter.emit(eventName, arg)
+    this.unsubscribeFn = this.unsubscribeFn || this.streamFn({
+      emit: (arg) => this.emitter.emit('data', arg)
     }) || noop
     return () => {
-      unsubscribeFn()
-      this.emitter.off(eventName, observeFn)
+      this.unsubscribeFn()
+      this.emitter.off('data', observeFn)
     }
   }
 

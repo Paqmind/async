@@ -131,7 +131,7 @@ describe('stream/stream.js', () => {
     })
 
     describe('two subscriptions for one stream', () => {
-      it('should work independently', (done) => {
+      it.skip('should work independently', (done) => {
         let s$1 = new Stream(({emit}) => {
           let x = 0
           let interval = setInterval(() => emit(x++), 10)
@@ -152,6 +152,29 @@ describe('stream/stream.js', () => {
           uns2()
           assert.deepEqual(observeArgs1, [0, 1, 2, 3, 4])
           assert.deepEqual(observeArgs2, [0, 1])
+          done()
+        }, 55)
+      })
+
+      it('should work interconnected', (done) => {
+        let s$1 = new Stream(({emit}) => {
+          let x = 0
+          let interval = setInterval(() => emit(x++), 10)
+          return () => clearInterval(interval)
+        })
+
+        let observeArgs1 = []
+        let observeArgs2 = []
+
+        let unsFn = s$1.observe((arg) => observeArgs1.push(arg))
+        setTimeout(() => {
+          s$1.observe((arg) => observeArgs2.push(arg))
+        }, 35)
+
+        setTimeout(() => {
+          unsFn()
+          assert.deepEqual(observeArgs1, [0, 1, 2, 3, 4])
+          assert.deepEqual(observeArgs2, [3, 4])
           done()
         }, 55)
       })
