@@ -45,4 +45,18 @@ module.exports = class Stream {
       })
     })
   }
+
+  take (number) {
+    return new Stream(({emit}) => {
+      let unsubscribeFn = this.observe((x) => {
+        if (number) {
+          number--
+          emit(x)
+        } else {
+          unsubscribeFn()
+        }
+      })
+      return unsubscribeFn
+    })
+  }
 }

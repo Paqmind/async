@@ -5,11 +5,8 @@ let s$ = new Stream(({emit}) => {
   let interval = setInterval(() => emit(x++), 500)
   return () => clearInterval(interval)
 })
-let uns = s$.observe((arg) => console.log('first: ' + arg))
-setTimeout(() => {
-  s$.observe((arg) => console.log('second: ' + arg))
-}, 5000)
+let uns = s$.take(10).observe((arg) => console.log('---' +arg))
 
 setTimeout(() => {
   uns()
-}, 10000)
+}, 1500)

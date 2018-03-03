@@ -130,6 +130,26 @@ describe('stream/stream.js', () => {
       })
     })
 
+    describe('#take()', () => {
+      it('should call observeFn 5 times', (done) => {
+        let s$ = new Stream(({emit}) => {
+          let x = 0
+          let interval = setInterval(() => emit(x++), 5)
+          return () => clearInterval(interval)
+        })
+        let observeArgs = []
+        let unsubscribeFn = s$.take(5).observe((arg) => {
+          observeArgs.push(arg)
+        })
+
+        setTimeout(() => {
+          unsubscribeFn()
+          assert.deepEqual(observeArgs, [0, 1, 2, 3, 4])
+          done()
+        }, 45)
+      })
+    })
+
     describe('two subscriptions for one stream', () => {
       it.skip('should work independently', (done) => {
         let s$1 = new Stream(({emit}) => {
